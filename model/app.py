@@ -6,11 +6,16 @@ from PIL import Image
 from tensorflow.keras.preprocessing import image
 import keras
 import numpy as np
+from sklearn import svm
+import pickle
 
 app = Flask(__name__)
 CORS(app)
 
-print(os.listdir('models'))
+def svm_create():
+    with open(r'models/model.pkl', 'rb') as f:
+        clf = pickle.load(f)
+        return clf
 
 models = {
     "InceptionRes": load_model(os.path.join('models',
