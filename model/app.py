@@ -32,7 +32,8 @@ models = {
     "ResNet101": load_model(os.path.join('models', 'ResNet101_model.h5')),
     "VGG16": load_model(os.path.join('models', 'VGG16_model.h5')),
     "DenseNet201": load_model(os.path.join('models', 'DenseNet201_model.h5')),
-    "From Scratch": load_model(os.path.join('models', 'scratch_model.h5')),
+    "CNN_1": load_model(os.path.join('models', 'scratch_model.h5')),
+    "NASNetMobile": load_model(os.path.join('models', 'best_NASnet_mobile_model.h5')),
 }
 
 labels = ['Natural', 'Drowsy']

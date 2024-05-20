@@ -4,14 +4,20 @@ import Datatable from "./Datatable"
 import { PredictionData, Result } from "../../types/data"
 
 const Modelselector = () => {
-    const options = ["InceptionRes", "MobileNet", "ResNet50", "Xception"]
-    const [selectFile, setSelectFile] = useState("")
+    const [selectFile, setSelectFile] = useState()
     const [prediction, setPrediction] = useState<Result[]>([])
+    const [image, setImage] = useState<string | ArrayBuffer | null>(null)
     const [error, setError] = useState("")
 
     const handleFileChange = (e: any) => {
         setSelectFile(e.target.files[0])
-        console.log(e.target.files[0])
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
+        reader.readAsDataURL(e.target.files[0]);
+
     }
 
     const handleSubmit = async (e: any) => {
@@ -36,19 +42,27 @@ const Modelselector = () => {
         }
     }
     return (
-        <div className="p-5 space-y-5">
-            <div className="text-3xl text-white font-bold">Model Selector</div>
-            <form className="" onSubmit={handleSubmit}>
-                {error && <div className="text-red-500">{error}</div>}
-                <input type="file" onChange={(e) => handleFileChange(e)} />
-                {/* <select className="border-2 border-gray-500 rounded-lg p-1 px-4 m-2">
-                    {options.map((option, index) => {
-                        return <option key={index} value={option}>{option}</option>
-                    })}
-                </select> */}
-                <button type="submit" className="bg-blue-500 text-white p-2 px-4 rounded-lg">Predict</button>
-            </form>
-            {prediction.length != 0 && <Datatable results={prediction} />}
+        <div className="p-5">
+            <div className="flex flex-col items-center gap-y-3">
+                <div>
+                    <form className="" onSubmit={handleSubmit}>
+                        {error && <div className="text-red-500">{error}</div>}
+                        <input type="file" onChange={(e) => handleFileChange(e)} />
+                        <button type="submit" className="bg-blue-500 text-white p-2 px-4 rounded-lg">Predict</button>
+                    </form>
+
+                </div>
+                <div className="flex gap-x-3 items-center">
+                    <div>
+                        {image && <img src={image as string} className="w-[500px] h-[300px]" />}
+                    </div>
+                    {prediction.length != 0 && <Datatable results={prediction} />}
+                </div>
+                <div>
+
+                </div>
+            </div>
+
         </div>
     )
 }
